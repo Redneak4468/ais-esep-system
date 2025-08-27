@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<h1>Вход</h1>
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <p>
+        <label for="id_username">Логин</label><br/>
+        {{ form.username }}
+    </p>
+    <p>
+        <label for="id_password">Пароль</label><br/>
+        {{ form.password }}
+    </p>
+    <button type="submit">Войти</button>
+    <input type="hidden" name="next" value="{{ next }}"/>
+</form>
+<p>Нет аккаунта? <a href="{% url 'accounts:signup' %}">Зарегистрируйтесь</a></p>
+{% endblock %}

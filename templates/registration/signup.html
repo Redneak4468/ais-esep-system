@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+  <h1>Регистрация</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <p>
+      <label for="id_username">Логин</label><br />
+      {{ form.username }}
+      {{ form.username.errors }}
+    </p>
+    <p>
+      <label for="id_email">Email</label><br />
+      {{ form.email }}
+      {{ form.email.errors }}
+    </p>
+    <p>
+      <label for="id_password1">Пароль</label><br />
+      {{ form.password1 }}
+      {{ form.password1.errors }}
+    </p>
+    <p>
+      <label for="id_password2">Пароль ещё раз</label><br />
+      {{ form.password2 }}
+      {{ form.password2.errors }}
+    </p>
+    <button type="submit">Создать аккаунт</button>
+  </form>
+{% endblock %}
