@@ -4,8 +4,11 @@
     {% load static %}
     <meta charset="utf-8"/>
     <title>{% block title %}ИС на Django{% endblock %}</title>
+
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="icon" href="{% static 'favicon.ico' %}" />
+    <link rel="icon" href="{% static 'favicon.ico' %}"/>
     {% load static %}
 </head>
 <body>
@@ -36,9 +39,10 @@
     {% endif %}
     {% block content %}{% endblock %}
 </main>
-
-<footer>
-    <small>&copy; {% now "Y" %}</small>
+<footer class="footer">
+    <div>
+        <p>No copyright</p>
+    </div>
 </footer>
 </body>
 </html>

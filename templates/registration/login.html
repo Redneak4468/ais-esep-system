@@ -1,20 +1,57 @@
-{% extends "base.html" %}
-{% block title %}Вход{% endblock %}
-{% block content %}
-<h1>Вход</h1>
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    <p>
-        <label for="id_username">Логин</label><br/>
-        {{ form.username }}
-    </p>
-    <p>
-        <label for="id_password">Пароль</label><br/>
-        {{ form.password }}
-    </p>
-    <button type="submit">Войти</button>
-    <input type="hidden" name="next" value="{{ next }}"/>
-</form>
-<p>Нет аккаунта? <a href="{% url 'accounts:signup' %}">Зарегистрируйтесь</a></p>
-{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <link rel="stylesheet" href="{% static 'assets/css/login.css' %}">
+</head>
+<body>
+<div class="login-page">
+    <!-- Заголовок сверху -->
+    <h2 class="login-title">Добро пожаловать в информационную систему</h2>
+
+    <!-- Контейнер формы -->
+    <div class="wrapper">
+        <div class="header">
+            <h3 class="sign-in">Авторизация</h3>
+        </div>
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <!-- Логин -->
+            <div class="form-group">
+                <label for="id_username">Логин</label>
+                {{ form.username }}
+            </div>
+
+            <!-- Пароль -->
+            <div class="form-group">
+                <label for="id_password">Пароль</label>
+                {{ form.password }}
+            </div>
+
+            <!-- Чекбокс + забыли пароль -->
+            <div class="form-extra">
+                <label class="remember">
+                    <input type="checkbox" name="remember"> Запомнить меня
+                </label>
+                <a href="#" class="forgot">Забыли пароль?</a>
+            </div>
+
+            <!-- Кнопка -->
+            <button type="submit" class="btn">Войти</button>
+
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </form>
+    </div>
+
+    <!-- Полупрозрачный логотип -->
+    <div class="logo-bg">
+        <img src="{% static 'images/logo.png' %}" alt="Логотип">
+    </div>
+</div>
+</body>
+</html>

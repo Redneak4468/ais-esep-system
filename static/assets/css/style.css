@@ -19,8 +19,9 @@ body {
 }
 
 a {
-  color: #3a3b3e;
+  color: #09112b;
   text-decoration: none;
+  font-size: 13px;
 }
 
 a:hover {
@@ -36,7 +37,7 @@ h1, h2, h3, h4, h5, h6 {
 # Main
 --------------------------------------------------------------*/
 #main {
-  margin-top: 60px;
+  margin-top: 30px;
   padding: 20px 30px;
   transition: all 0.3s;
 }
@@ -47,21 +48,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 table {
-  font-size: 12px;
+  font-size: 13px;
   
 }
 .container {
   max-width: 90%;
 }
 
-table.dataTable thead th,table.dataTable thead td,table.dataTable tfoot th,table.dataTable tfoot td {
-  text-align: center
-}
-
 label {
   font-weight: bold;
   color: #336699;  /* Например, синий цвет */
-  font-size: 12px;
+  font-size: 15px;
 }
 
 div#auditor {
@@ -77,6 +74,7 @@ div#inspector_order, div#audit_start_end, div#audit_reason_order, div#order_scan
 
 div#order_creat {
   width: 800px;
+  padding-right: 50px;
 }
 
 
@@ -282,6 +280,16 @@ div#calendar {
   border: none;
   border-radius: 5px;
   box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+  padding: 15px;
+}
+
+.card_order{
+  margin-bottom: 30px;
+  width: 50%;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+  padding: 15px;
 }
 
 .card-header, .card-footer {
@@ -728,6 +736,10 @@ div#calendar {
   background-color: #3a3b3e;
 }
 
+.sidebar-nav .active {
+  color: #0d6efd;
+  font-weight: 600;
+}
 /*--------------------------------------------------------------
 # Dashboard
 --------------------------------------------------------------*/

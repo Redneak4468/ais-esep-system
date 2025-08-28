@@ -1,0 +1,119 @@
+/* Общая страница входа с градиентом */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 120px;
+    background: linear-gradient(180deg, #948dff, #ffffff);
+    position: relative;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+/* Заголовок сверху */
+.login-title {
+    color: #fff;
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Контейнер формы */
+.wrapper {
+    width: 380px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 2;
+}
+
+/* Заголовок формы */
+.wrapper .header h3 {
+    margin: 0 0 20px 0;
+    font-size: 22px;
+    text-align: center;
+}
+
+/* Поля формы */
+.form-group {
+    margin-bottom: 18px;
+}
+
+form input[type="text"],
+form input[type="password"] {
+    width: 90%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+    transition: border 0.3s;
+    outline: none;
+}
+
+form input:focus {
+    border-color: #4a90e2;
+}
+
+/* Чекбокс + ссылка */
+.form-extra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0 20px 0;
+    font-size: 14px;
+}
+
+.remember {
+    display: flex;
+    align-items: center;
+    color: #555;
+}
+
+.remember input {
+    margin-right: 6px;
+}
+
+.forgot {
+    color: #4a90e2;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.forgot:hover {
+    text-decoration: underline;
+}
+
+/* Кнопка */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #4a90e2;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #357ab8;
+}
+
+/* Полупрозрачный логотип */
+.logo-bg {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    opacity: 0.15;
+    z-index: 1;
+}
+
+.logo-bg img {
+    width: 180px;
+    height: auto;
+}
