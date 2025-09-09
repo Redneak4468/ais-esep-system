@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="https://r.mobirisesite.com/1786367/assets/images/photo-1487058792275-0ad4aaf24ca7.jpeg" 
+                 alt="Logo" width="40" height="40" class="rounded-circle me-2">
+            <span class="fw-bold">Справочник</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Переключить навигацию">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="{% url 'main_menu' %}">Главная</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}">Контакты</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}" target="_blank">Админка</a></li>
+            </ul>
+
+            <div class="ms-lg-3">
+                {% if user.is_authenticated %}
+                    <span class="me-2">Привет, {{ user.username }}!</span>
+                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button class="btn btn-sm btn-outline-danger" type="submit">Выйти</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-sm btn-primary">Войти</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

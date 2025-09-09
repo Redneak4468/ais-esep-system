@@ -1,0 +1,49 @@
+<nav class="sidebar-navigation">
+    <ul>
+        <li>
+            <a href="{% url 'main_menu' %}">
+                <i class="fa-solid fa-house-chimney"></i>
+                <span class="tooltip">На главную</span>
+            </a>
+
+        </li>
+        <li>
+            <a href="{% url 'empl_list' %}">
+                <i class="fa-solid fa-list"></i>
+                <span class="tooltip">Список сотрудников</span>
+            </a>
+
+        </li>
+        <li>
+            <a href="{% url 'contacts' %}">
+                <i class="fa-solid fa-phone-flip"></i>
+                <span class="tooltip">Контакты</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'accounts:profile_detail' %}">
+                <i class="fa-solid fa-user"></i>
+                <span class="tooltip">Личный кабинет</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'arrangement' %}">
+                <i class="fa-solid fa-table-list"></i>
+                <span class="tooltip">Расстановка</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'settings' %}">
+                <i class="fa fa-sliders"></i>
+                <span class="tooltip">Параметры</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    $('ul li').on('click', function() {
+	$('li').removeClass('active');
+	$(this).addClass('active');
+});
+</script>

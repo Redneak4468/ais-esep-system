@@ -1,9 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.contrib.auth import login
-from django.views.generic import CreateView
-
+from django.views.generic import CreateView, DetailView, ListView
 from .forms import SignUpForm
+from .models import Profile
+
 
 class SignUpView(CreateView):
     template_name = "registration/signup.html"
@@ -15,3 +17,12 @@ class SignUpView(CreateView):
         # автоматически логиним свежесозданного пользователя
         login(self.request, self.object)
         return response
+
+
+class ProfileDetailView(LoginRequiredMixin, DetailView):
+    model = Profile
+    template_name = "accounts/dashboard.html"
+    context_object_name = "profile"
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile
