@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card p-4 shadow-sm">
+        <div class="row">
+            <div class="col-md-3 text-center">
+                {% if employee.user_photo %}
+                <img src="{{ employee.user_photo.url }}" alt="Фото профиля" class="img-fluid rounded-circle mb-3">
+                {% else %}
+                <img src="media/user_photos/аватарка_для_примера.jpg"
+                     alt="Фото профиля"
+                     class="img-fluid rounded-circle mb-3">
+                {% endif %}
+                <h5>{{ employee.full_name }}</h5>
+                <p class="text-muted">{{ employee.position }}</p>
+            </div>
+            <div class="col-md-9">
+                <h4>Информация</h4>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Email:</strong> {{ employee.email }}</li>
+                    <li class="list-group-item"><strong>Рабочий телефон:</strong> {{ employee.phone_number_work }}</li>
+                    <li class="list-group-item"><strong>Мобильный телефон:</strong> {{ employee.phone_number_mobile }}
+                    </li>
+                    <li class="list-group-item"><strong>Филиал:</strong> {{ employee.office }}</li>
+                    <li class="list-group-item"><strong>Краткая информация:</strong> {{ employee.bio }}</li>
+                </ul>
+            </div>
+            <div class="col-md-12">
+                <ul>
+                    <li class="list-group-item"><span class="text-muted">Год рождения:</span>
+                        {{ employee.birth_date|date:"j E Y" }}
+                    </li>
+                    <li class="list-group-item"><span class="text-muted">Пол:</span>
+                        {{ employee.get_gender_display }}
+                    </li>
+                    <li class="list-group-item"><strong class="text-muted">Статус:</strong>
+                        <span class="{% if employee.status == 'active' %} text-success
+                                     {% elif employee.status == 'vacation' %} text-primary
+                                     {% elif employee.status == 'fired' %} text-danger
+                                     {% endif %}">{{ employee.get_status_display }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'employees' %}" class="btn btn-outline-primary mt-3">
+        ← Вернуться к списку
+    </a>
+</div>
+{% endblock %}
+

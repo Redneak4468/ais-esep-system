@@ -123,7 +123,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # Куда перенаправлять после логина/логаута
-LOGIN_REDIRECT_URL = "dashboard"
+LOGIN_REDIRECT_URL = "main-menu"
 LOGOUT_REDIRECT_URL = "login"  # при желании на главную: "/"
 LOGIN_URL = "login"
 # Default primary key field type

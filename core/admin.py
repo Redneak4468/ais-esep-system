@@ -4,14 +4,14 @@ from .models import Office, Position, Department
 
 @admin.register(Office)
 class OfficeAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "city", "address")
+    list_display = ("name", "city", "address")
     search_fields = ("name", "city")
     list_filter = ("name", "city")
 
 
 @admin.register(Position)
 class PositionAdmin(admin.ModelAdmin):
-    list_display = ("id", "department", "title")
+    list_display = ("title", "department")
     search_fields = ("department", "title")
     list_filter = ("department",)
 

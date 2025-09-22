@@ -18,7 +18,7 @@ class Profile(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True,
-                                related_name="employee_profile", verbose_name="Учётная запись", )
+                                related_name="profile", verbose_name="Учётная запись", )
 
     # ФИО
     first_name = models.CharField("Имя", max_length=100)
@@ -59,19 +59,23 @@ class Profile(models.Model):
             raise ValidationError("PIN must be exactly 14 characters long.")
 
     # Связи
-    position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Должность")
+    position = models.ForeignKey(Position, on_delete=models.SET_NULL,
+                                 null=True, blank=True, verbose_name="Должность", related_name="profiles")
     office = models.ForeignKey(Office, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Филиал")
 
     # Контакты
     email = models.EmailField("Email", blank=True, null=True)
-    phone_number_work = models.CharField("Рабочий телефон", max_length=20, blank=True, null=True)
-    phone_number_mobile = models.CharField("Мобильный телефон", max_length=20, blank=True, null=True)
-    phone_number_government = models.CharField("Правит. телефон", max_length=10, blank=True, null=True)
-    office_number = models.CharField("№ кабинета", max_length=5, blank=True, null=True)
+    phone_number_work = models.CharField("Рабочий телефон",
+                                         max_length=20, blank=True, null=True, default="-")
+    phone_number_mobile = models.CharField("Мобильный телефон",
+                                           max_length=20, blank=True, null=True, default="-")
+    phone_number_government = models.CharField("Правит. телефон",
+                                               max_length=10, blank=True, null=True, default="-")
+    office_number = models.CharField("№ кабинета", max_length=5, blank=True, null=True, default="-")
 
     # Дополнительно
     user_photo = models.ImageField("Фото пользователя", upload_to="user_photos/", blank=True, null=True)
-    bio = models.TextField("О себе", blank=True, null=True)
+    bio = models.TextField("О себе", blank=True, null=True, default="-")
 
     # Служебные поля
     created_at = models.DateTimeField("Создан", auto_now_add=True)

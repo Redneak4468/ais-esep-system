@@ -12,7 +12,7 @@ class Position(models.Model):
     title = models.CharField("Название должности", max_length=150)
     department = models.ForeignKey(
         Department,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         related_name="positions",
         null=True, blank=True,
         verbose_name="Отдел"

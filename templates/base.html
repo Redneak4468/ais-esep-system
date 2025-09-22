@@ -26,23 +26,21 @@
 </header>
 
 <div class="container-fluid">
-    <div class="row">
         <!-- Сайдбар -->
-        <nav class="col-2 col-md-1 sidebar-navigation p-0">
+        <nav>
             {% include "includes/sidebar.html" %}
         </nav>
 
         <!-- Контент -->
-        <main class="col ps-md-2 pt-4">
+        <main>
             <div class="main-block p-4 shadow-sm">
                 {% block content %}{% endblock %}
             </div>
         </main>
-    </div>
 </div>
 
 <!-- Футер -->
-<footer class="footer mt-auto">
+<footer class="footer">
     {% include "includes/footbar.html" %}
 </footer>
 </body>

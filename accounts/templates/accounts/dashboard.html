@@ -9,7 +9,9 @@
                 {% if profile.user_photo %}
                 <img src="{{ profile.user_photo.url }}" alt="Фото профиля" class="img-fluid rounded-circle mb-3">
                 {% else %}
-                <img src="media/user_photos/" alt="Фото профиля" class="img-fluid rounded-circle mb-3">
+                <img src="media/user_photos/аватарка_для_примера.jpg"
+                     alt="Фото профиля"
+                     class="img-fluid rounded-circle mb-3">
                 {% endif %}
                 <h5>{{ profile.full_name }}</h5>
                 <p class="text-muted">{{ profile.position }}</p>

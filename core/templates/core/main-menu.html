@@ -1,10 +1,49 @@
 {% extends "base.html" %}
 {% block title %}ИС СП{% endblock %}
 {% block content %}
-  <h1>Информационная система</h1>
-    <div>
-        <h2>Несколько блоков со ссылками . . .</h2>
-        <h2>Несколько блоков со ссылками . . .</h2>
-        <h2>Несколько блоков со ссылками . . .</h2>
+<div class="title-block">
+    <img src="/static/favicon/android-chrome-192x192.png">
+    <h3>Кыргыз Республикасынын Эсептөө палатасынын маалымат системасына кош келиңиздер</h3>
+</div>
+
+<div class="menu-blocks">
+    <div class="main-blocks">
+        <div class="guide-block">
+            <a href="https://infodocs.srs.kg" name="infodocs">
+                <p>"Infodocs" (СЭД) - мамлекеттик органдарда документ жүгүртүүнү
+                    автоматташтыруу үчүн иштелип чыккан маалымат системасы</p>
+                <div class="logo-block">
+                    <img src="" alt="infodocs">
+                </div>
+            </a>
+        </div>
+        <div class="guide-block">
+            <a href="https://www.esep.kg/index.php?lang=kg" name="esep.kg">
+                <p>Кыргыз Республикасынын Эсептөө палатасынын маалымат расмий сайты</p>
+                <div class="logo-block">
+                    <img src="" alt="">
+                </div>
+            </a>
+        </div>
     </div>
+
+    <div class="main-blocks">
+        <div class="guide-block">
+            <a href="{% url 'contacts' %}" name="contacts">
+                <div class="logo-block">
+                    <img src="" alt=""> <!-- Тут будет иконка или картина телефона-->
+                </div>
+                <p>Эсептөө палатасынын кызматкерлердин байланыш телефону</p>
+            </a>
+        </div>
+        <div class="guide-block">
+            <a href="{% url 'accounts:profile_detail' %}" name="profile">
+                <div class="logo-block">
+                    <img src="" alt=""> <!-- Тут будет иконка или картина личного кабинета -->
+                </div>
+                <p>Жеке кабинетке кирүү</p>
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}

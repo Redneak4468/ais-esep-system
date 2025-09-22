@@ -1,35 +1,56 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="https://r.mobirisesite.com/1786367/assets/images/photo-1487058792275-0ad4aaf24ca7.jpeg" 
+            <img src="https://r.mobirisesite.com/1786367/assets/images/photo-1487058792275-0ad4aaf24ca7.jpeg"
                  alt="Logo" width="40" height="40" class="rounded-circle me-2">
             <span class="fw-bold">Справочник</span>
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                aria-label="Переключить навигацию">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="{% url 'main_menu' %}">Главная</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}">Контакты</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}" target="_blank">Админка</a></li>
-            </ul>
-
-            <div class="ms-lg-3">
-                {% if user.is_authenticated %}
-                    <span class="me-2">Привет, {{ user.username }}!</span>
+        <div class="dropdown ms-lg-3">
+            <a class="d-flex align-items-center text-decoration-none dropdown-toggle"
+               href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {% if user.is_authenticated and user.profile.user_photo %}
+                <span class="fw-semibold me-4">
+                {% if user.first_name or user.last_name %}
+                    {{ user.first_name }} {{ user.last_name }}
+                {% else %}
+                    {{ user.username }}
+                {% endif %}
+                </span>
+                <img src="{{ user.profile.user_photo.url }}" alt="avatar"
+                     class="rounded-circle me-2" width="32" height="32">
+                {% else %}
+                <i class="fa-solid fa-circle-user fa-2x me-2 text-primary"></i>
+                {% endif %}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenu">
+                <li>
+                    <a class="dropdown-item" href="{% url 'main_menu' %}">
+                        <i class="fa-solid fa-house me-2"></i> На главную
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">
+                        <i class="fa-solid fa-sliders me-2"></i> Администрирование
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#">
+                        <i class="fa-solid fa-language me-2"></i> Сменить язык
+                    </a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li>
                     <form method="post" action="{% url 'logout' %}" class="d-inline">
                         {% csrf_token %}
-                        <button class="btn btn-sm btn-outline-danger" type="submit">Выйти</button>
+                        <button class="dropdown-item text-danger" type="submit">
+                            <i class="fa-solid fa-right-from-bracket me-2"></i> Выйти
+                        </button>
                     </form>
-                {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-sm btn-primary">Войти</a>
-                {% endif %}
-            </div>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
