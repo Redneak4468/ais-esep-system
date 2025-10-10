@@ -14,7 +14,8 @@
 
 html, body {
   font-family: "Open Sans", sans-serif;
-  background: #f6f9ff;
+  background-image: url('/media/user_photos/back-image.png');
+  background-size: cover;
   color: #444444;
   display: flex;
   flex-direction: column;
@@ -34,7 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .main-block {
-    background-color: #eaf5f9;
+    background-color: #f6fdff;
     border-radius: 5px;
     position: relative;
     display: block;
@@ -310,8 +311,8 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 .main-blocks{
   display: flex;
-  gap: 40px;
-  margin: 30px;
+  gap: 30px;
+  margin: 15px;
 }
 
 .guide-block{
@@ -345,14 +346,15 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: 15px; /* отступ справа от текста */
   background: #f1f1f1;
   border-radius: 8px;
-  display: flex;
+  display: flex;  
   justify-content: center;
   align-items: center;
 }
 
 .logo-block img {
-  max-width: 60%;
-  max-height: 60%;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
 }
 
 .guide-block:hover {
@@ -387,4 +389,23 @@ h1, h2, h3, h4, h5, h6 {
 
 .title-block h3 {
   padding: 50px 100px 40px;
+}
+
+/*--------------------------------------------------------------
+# Arrangement table
+--------------------------------------------------------------*/
+
+.table-editable tr, td:hover {
+  border: 1px solid #c8deff; /* голубая полоса */
+  cursor: pointer;
+  background-color: #c1fbff;  
+}
+
+.table-hover tbody tr:hover {
+  background-color: #eef7ff;
+  transition: background-color 0.2s;
+}
+
+button.btn-sm {
+  margin-left: 4px;
 }

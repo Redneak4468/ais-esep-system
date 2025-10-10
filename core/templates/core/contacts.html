@@ -6,51 +6,73 @@
         Кыргыз Республикасынын Эсептөө палатасынын Борбордук аппаратынын
         кызматкерлеринин телефондорунун жана отурган кабинеттеринин маалымдамасы
     </h4>
-
-    <table class="table table-striped table-hover text-center align-middle">
-        <thead class="table-primary">
-        <tr>
-            <th>ФИО</th>
-            <th>Должность</th>
-            <th>Служебный</th>
-            <th>Внутренний</th>
-            <th>Мобильный</th>
-            <th>Кабинет</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for dept in departments %}
-        <!-- Заголовок департамента -->
-        <tr class="table-secondary" data-bs-toggle="collapse" data-bs-target=".dept-{{ dept.id }}"
-            style="cursor:pointer;">
-            <td colspan="6" class="text-start fw-bold">
-                {{ dept.name }}
-            </td>
-        </tr>
-
-        {% with dept_employees=False %}
-        {% for pos in dept.positions.all %}
-        {% for contact in pos.profiles.all %}
-        {% with True as dept_employees %}{% endwith %}
-        <tr class="collapse show dept-{{ dept.id }}">
-            <td class="text-start">{{ contact.last_name }} {{ contact.first_name }} {{ contact.patronymic }}</td>
-            <td>{{ pos.title }}</td>
-            <td>{{ contact.phone_number_work }}</td>
-            <td>{{ contact.phone_number_government }}</td>
-            <td>{{ contact.phone_number_mobile }}</td>
-            <td>{{ contact.office_number }}</td>
-        </tr>
+    <form method="get" class="d-flex mx-right w-25 mb-3" role="search">
+        <input type="text"
+               name="q"
+               value="{{ request.GET.q }}"
+               class="form-control me-2"
+               placeholder="Аты-жөнү, телефон номери">
+        <button class="btn btn-outline-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </form>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link {% if not selected_office %}active{% endif %}" href="{% url 'contacts' %}">Баары</a>
+        </li>
+        {% for off in offices %}
+        <li class="nav-item">
+            <a class="nav-link {% if selected_office == off.id|stringformat:'s' %}active{% endif %}"
+               href="?office={{ off.id }}">
+                {{ off.name }}
+            </a>
+        </li>
         {% endfor %}
-        {% endfor %}
+    </ul>
 
-        {% if not dept.positions.all|length or not dept.positions.all.0.profiles.exists %}
-        <tr class="collapse show dept-{{ dept.id }}">
-            <td colspan="6" class="text-muted">Сотрудников нет</td>
-        </tr>
-        {% endif %}
-        {% endwith %}
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive mt-3">
+        <table class="table table-striped table-hover text-center align-middle">
+            <thead class="table-primary">
+            <tr>
+                <th>Аты-жөнү</th>
+                <th>Кызмат орду</th>
+                <th>Кызматтык телефон №</th>
+                <th>Өкмөттүк/ички телефон №</th>
+                <th>Мобилдик телефон №</th>
+                <th>Кабинет №</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in departments_list %}
+            <!-- Заголовок департамента -->
+            <tr class="table-secondary" data-bs-toggle="collapse" data-bs-target=".dept-{{ item.dept.id }}"
+                style="cursor:pointer;">
+                <td colspan="6" class="text-start fw-bold">
+                    {{ item.dept.name }}
+                    <span class="badge bg-secondary ms-2">{{ item.employees|length }}</span>
+                </td>
+            </tr>
+
+            {% if item.employees %}
+            {% for emp in item.employees %}
+            <tr class="collapse show dept-{{ item.dept.id }}">
+                <td class="text-start">
+                    {{ emp.profile.last_name }} {{ emp.profile.first_name }} {{ emp.profile.patronymic }}
+                </td>
+                <td>{{ emp.position.title }}</td>
+                <td>{{ emp.profile.phone_number_work }}</td>
+                <td>{{ emp.profile.phone_number_government }}</td>
+                <td>{{ emp.profile.phone_number_mobile }}</td>
+                <td>{{ emp.profile.office_number }}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr class="collapse show dept-{{ item.dept.id }}">
+                <td colspan="6" class="text-muted">Сотрудников нет</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
+
 {% endblock %}

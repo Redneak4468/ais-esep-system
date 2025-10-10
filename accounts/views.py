@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.views.generic import CreateView, DetailView, ListView
 from .forms import SignUpForm
-from .models import Profile
+from .models import Profile, Arrangement
 
 
 class SignUpView(CreateView):

@@ -2,7 +2,7 @@
 {% block title %}Список сотрудников{% endblock %}
 {% block content %}
 <div class="container mt-2">
-    <h2>Список сотрудников</h2>
+    <h2>Эсептөө палатасынын кызматкерлердин тизмеси</h2>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <!-- Фильтр по отделу -->
         <form method="get" class="d-flex">
@@ -10,7 +10,7 @@
                 <option value="">Баарын көрсөтүү</option>
                 {% for off in offices %}
                 <option value="{{ off.id }}"
-                        {% if off.id|stringformat:"s" == selected_office %}selected{% endif %}>
+                        {% if off.id|stringformat:'s' == selected_office %}selected{% endif %}>
                 {{ off.name }}
                 </option>
                 {% endfor %}
@@ -25,7 +25,7 @@
                     name="q"
                     value="{{ request.GET.q }}"
                     class="form-control me-2"
-                    placeholder="Поиск по фамилии или телефону">
+                    placeholder="Аты-жөнү менен издөө">
             <button class="btn btn-outline-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
@@ -33,10 +33,9 @@
     <table class="table table-striped table-hover text-center align-middle ">
         <thead class="table-primary">
         <tr>
-            <th>ФИО</th>
-            <th>Должность</th>
+            <th>Аты-жөнү</th>
+            <th>Кызмат орду</th>
             <th>email (esep)</th>
-            <th>Дата рождения</th>
             <th>Статус</th>
         </tr>
         </thead>
@@ -57,7 +56,6 @@
             </td>
             <td>{{ employee.position.title }}</td>
             <td>{{ employee.email }}</td>
-            <td>{{ employee.birth_date|date:"d.m.Y" }}</td>
             <td> {% if employee.status == 'active' %}
                 <span class="badge bg-success">{{ employee.get_status_display }}</span>
                 {% elif employee.status == 'vacation' %}

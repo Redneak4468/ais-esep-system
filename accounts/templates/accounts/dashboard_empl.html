@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Личный кабинет{% endblock %}
+{% block title %}Жеке кабинет{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
@@ -9,7 +9,7 @@
                 {% if employee.user_photo %}
                 <img src="{{ employee.user_photo.url }}" alt="Фото профиля" class="img-fluid rounded-circle mb-3">
                 {% else %}
-                <img src="media/user_photos/аватарка_для_примера.jpg"
+                <img src="/media/user_photos/аватарка_для_примера.jpg"
                      alt="Фото профиля"
                      class="img-fluid rounded-circle mb-3">
                 {% endif %}
@@ -17,23 +17,22 @@
                 <p class="text-muted">{{ employee.position }}</p>
             </div>
             <div class="col-md-9">
-                <h4>Информация</h4>
+                <h4>Жеке маалымат</h4>
                 <ul class="list-group">
-                    <li class="list-group-item"><strong>Email:</strong> {{ employee.email }}</li>
-                    <li class="list-group-item"><strong>Рабочий телефон:</strong> {{ employee.phone_number_work }}</li>
-                    <li class="list-group-item"><strong>Мобильный телефон:</strong> {{ employee.phone_number_mobile }}
+                    <li class="list-group-item"><strong>Email (esep):</strong> {{ employee.email }}</li>
+                    <li class="list-group-item"><strong>Кызматтык телефон:</strong>
+                        {{ employee.phone_number_work }}
+                    </li>
+                    <li class="list-group-item"><strong>Мобилдик телефон:</strong> {{ employee.phone_number_mobile }}
                     </li>
                     <li class="list-group-item"><strong>Филиал:</strong> {{ employee.office }}</li>
-                    <li class="list-group-item"><strong>Краткая информация:</strong> {{ employee.bio }}</li>
+                    <li class="list-group-item"><strong>Кыскача маалымат:</strong> {{ employee.bio }}</li>
                 </ul>
             </div>
             <div class="col-md-12">
                 <ul>
-                    <li class="list-group-item"><span class="text-muted">Год рождения:</span>
+                    <li class="list-group-item"><span class="text-muted">Туулган күнү:</span>
                         {{ employee.birth_date|date:"j E Y" }}
-                    </li>
-                    <li class="list-group-item"><span class="text-muted">Пол:</span>
-                        {{ employee.get_gender_display }}
                     </li>
                     <li class="list-group-item"><strong class="text-muted">Статус:</strong>
                         <span class="{% if employee.status == 'active' %} text-success

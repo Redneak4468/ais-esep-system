@@ -1,8 +1,211 @@
 {% extends "base.html" %}
-{% block title %}Контактные телефоны{% endblock %}
+{% block title %}Расстановка{% endblock %}
 {% block content %}
-  <h1>Расстановка</h1>
-    <div>
-        <h2>Таблица расстановки . . .</h2>
+<div class="mt-4">
+    <h3 class="text-center">
+        Кыргыз Республикасынын Эсептөө палатасынын Борбордук аппаратынын кызматкерлеринин жайгаштыруусу
+        <br>{{ selected_date|date:'d.m.Y' }}
+    </h3>
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <div class="d-flex align-items-center gap-2">
+            <a href="?date={{ previous_date|date:'Y-m-d' }}" class="btn btn-outline-primary btn-sm">←</a>
+            <input type="date" id="calendar" value="{{ selected_date|date:'Y-m-d' }}"
+                   class="form-control form-control-sm"
+                   onchange="location.href='?date='+this.value">
+            <a href="?date={{ next_date|date:'Y-m-d' }}" class="btn btn-outline-primary btn-sm">→</a>
+        </div>
+
+        <div class="d-flex gap-2">
+            <form method="post" action="{% url 'import_arrangement_day' %}" class="d-flex align-items-center gap-2">
+                {% csrf_token %}
+                <input type="hidden" name="target_date" value="{{ selected_date|date:'Y-m-d' }}">
+                <input type="date" name="source_date" class="form-control form-control-sm" required>
+                <button type="submit" class="btn btn-secondary btn-sm">Импортировать</button>
+            </form>
+
+            <form method="post" action="{% url 'clear_arrangement_day' %}">
+                {% csrf_token %}
+                <input type="hidden" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+                <button type="submit" class="btn btn-warning btn-sm">Очистить</button>
+            </form>
+
+            <form method="post" action="{% url 'delete_arrangement_day' %}">
+                {% csrf_token %}
+                <input type="hidden" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+                <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+            </form>
+        </div>
     </div>
+
+
+    <h4 class="mt-3 text-primary">Аппарат</h4>
+    <table class="table table-striped-columns text-center align-middle">
+        <thead class="table-primary">
+        <tr style="font-size: 12px">
+            <th>Кызматкердин фамилиясы, аты, атасынын аты</th>
+            <th>Ээлеген кызмат орду</th>
+            <th>Аудит жүргүзүү / ВАК ишине катышуу / окутуу</th>
+            <th>Аудиттин/командировканын максаты</th>
+            <th>Аудиттин негизи/жана башка иш чаралар (иш планы, № төраганын
+                буйругунун датасы); Узартуу тууралуу буйругу
+            </th>
+            <th>Аудитти жүргүзүү/ командировканын мөөнөтү</th>
+            <th>Дареги (область/шаар/район/айыл, көчө, тел № ж.б.)</th>
+            <th>Эмгек өргүүдө, өргүмөөдө, эмгекке жарамсыздык баракчасында</th>
+            <th>Эскертүү (Саат 9:15 кызмат-дин жумуш ордундарында болушун текшерүү )</th>
+            <th>Аудит, эмгек өргүү ж.б. убакыты баштала элек</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for arr in apparatus %}
+        <tr style="font-size: 12px">
+            <td style="font-size: 14px">{{ arr.profile.full_name }}</td>
+            <td>{{ arr.position.title }}</td>
+
+            <td class="editable" data-field="audit_conducting" data-id="{{ arr.id }}">
+                {{ arr.audit_conducting|default:" " }}
+            </td>
+            <td class="editable" data-field="audit_purpose" data-id="{{ arr.id }}">
+                {{ arr.audit_purpose|default:" " }}
+            </td>
+            <td class="editable" data-field="order_num_date" data-id="{{ arr.id }}">
+                {{ arr.order_num_date|default:" " }}
+            </td>
+            <td class="editable" data-field="order_dates" data-id="{{ arr.id }}">
+                {{ arr.order_dates|default:" " }}
+            </td>
+            <td class="editable" data-field="audit_address" data-id="{{ arr.id }}">
+                {{ arr.audit_address|default:" " }}
+            </td>
+            <td class="editable" data-field="on_status" data-id="{{ arr.id }}">
+                {{ arr.on_status|default:" " }}
+            </td>
+            <td class="editable" data-field="time_check" data-id="{{ arr.id }}">
+                {{ arr.time_check|default:" " }}
+            </td>
+            <td class="editable" data-field="time_not_start" data-id="{{ arr.id }}">
+                {{ arr.time_not_start|default:" " }}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h4 class="mt-3 text-primary">Инспекторы</h4>
+    <table class="table table-striped-columns text-center align-middle">
+        <thead class="table-primary">
+        <tr style="font-size: 12px">
+            <th>Кызматкердин фамилиясы, аты, атасынын аты</th>
+            <th>Ээлеген кызмат орду</th>
+            <th>Аудит жүргүзүү / ВАК ишине катышуу / окутуу</th>
+            <th>Аудиттин/командировканын максаты</th>
+            <th>Аудиттин негизи/жана башка иш чаралар (иш планы, № төраганын
+                буйругунун датасы); Узартуу тууралуу буйругу
+            </th>
+            <th>Аудитти жүргүзүү/ командировканын мөөнөтү</th>
+            <th>Дареги (область/шаар/район/айыл, көчө, тел № ж.б.)</th>
+            <th>Эмгек өргүүдө, өргүмөөдө, эмгекке жарамсыздык баракчасында</th>
+            <th>Эскертүү (Саат 9:15 кызмат-дин жумуш ордундарында болушун текшерүү )</th>
+            <th>Аудит, эмгек өргүү ж.б. убакыты баштала элек</th>
+            <th>Жооптуу аудитор</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for arr in inspectors %}
+        <tr style="font-size: 12px">
+            <td style="font-size: 14px">{{ arr.profile.full_name }}</td>
+            <td>{{ arr.position.title }}</td>
+
+            <td class="editable" data-field="audit_conducting" data-id="{{ arr.id }}">
+                {{ arr.audit_conducting|default:" " }}
+            </td>
+            <td class="editable" data-field="audit_purpose" data-id="{{ arr.id }}">
+                {{ arr.audit_purpose|default:" " }}
+            </td>
+            <td class="editable" data-field="order_num_date" data-id="{{ arr.id }}">
+                {{ arr.order_num_date|default:" " }}
+            </td>
+            <td class="editable" data-field="order_dates" data-id="{{ arr.id }}">
+                {{ arr.order_dates|default:" " }}
+            </td>
+            <td class="editable" data-field="audit_address" data-id="{{ arr.id }}">
+                {{ arr.audit_address|default:" " }}
+            </td>
+            <td class="editable" data-field="on_status" data-id="{{ arr.id }}">
+                {{ arr.on_status|default:" " }}
+            </td>
+            <td class="editable" data-field="time_check" data-id="{{ arr.id }}">
+                {{ arr.time_check|default:" " }}
+            </td>
+            <td class="editable" data-field="time_not_start" data-id="{{ arr.id }}">
+                {{ arr.time_not_start|default:" " }}
+            </td>
+            <td class="editable" data-field="response_audit" data-id="{{ arr.id }}">
+                {{ arr.response_audit|default:" " }}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".editable").forEach(cell => {
+            cell.addEventListener("click", () => {
+                if (cell.querySelector("textarea")) return;
+                const value = cell.innerText.trim();
+                const textarea = document.createElement("textarea");
+                textarea.type = "text";
+                textarea.classList.add("form-control", "form-control-sm");
+                textarea.value = value === " " ? "" : value;
+                textarea.style.width = "100%";
+                textarea.style.height = "100%";
+                textarea.style.boxSizing = "border-box";
+                textarea.style.resize = "none";
+                textarea.style.fontFamily = "inherit";
+                textarea.style.fontSize = "inherit";
+                textarea.style.padding = "5px";
+                textarea.style.border = "1px solid #007bff";
+                textarea.style.borderRadius = "2px";
+
+
+                cell.innerHTML = "";
+                cell.appendChild(textarea);
+                textarea.focus();
+
+                textarea.addEventListener("blur", () => {
+                    const newValue = textarea.value;
+                    const field = cell.dataset.field;
+                    const id = cell.dataset.id;
+
+                    fetch(`/arrangement/update/${id}/`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": getCookie("csrftoken"),
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ field, value: newValue })
+                    }).then(() => {
+                        cell.innerText = newValue || " ";
+                    });
+                });
+            });
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
 {% endblock %}

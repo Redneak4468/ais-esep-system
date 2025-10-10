@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 from core.models import Office, Position
 from django.db import models
@@ -51,7 +52,7 @@ class Profile(models.Model):
         super().save(*args, **kwargs)
 
     def full_name(self):
-        return f"{self.first_name} {self.last_name} {self.patronymic}"
+        return f"{self.last_name} {self.first_name} {self.patronymic}"
 
     def clean(self):
         # Additional model-level validation
@@ -81,3 +82,41 @@ class Profile(models.Model):
     created_at = models.DateTimeField("Создан", auto_now_add=True)
     updated_at = models.DateTimeField("Обновлён", auto_now=True)
     status = models.CharField("Статус", max_length=10, choices=STATUS_CHOICES, default="active")
+    is_inspector = models.BooleanField("Инспектор", default=False)
+
+
+class Arrangement(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="arrangements")
+    position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, blank=True)
+    audit_conducting = models.CharField(
+        "Аудит жүргүзүү / ВАК ишине катышуу / окутуу", max_length=500, blank=True, null=True)
+    audit_purpose = models.CharField(
+        "Аудиттин/командировканын максаты", max_length=500, blank=True, null=True)
+    order_num_date = models.CharField(
+        "Аудиттин негизи/жана башка иш чаралар (иш планы, № төраганын буйругунун датасы); "
+        "Узартуу тууралуу буйругу",
+        max_length=500, blank=True, null=True)
+    order_dates = models.CharField(
+        "Аудитти жүргүзүү/ командировканын мөөнөтү", max_length=255, blank=True, null=True)
+    audit_address = models.CharField(
+        "Дареги (область/шаар/район/айыл, көчө, тел № ж.б.)", max_length=255, blank=True, null=True)
+    on_status = models.CharField(
+        "Эмгек өргүүдө, өргүмөөдө, эмгекке жарамсыздык баракчасында",
+        max_length=255, blank=True, null=True)
+    time_check = models.CharField(
+        "Эскертүү (Саат 9:15 кызмат-дин жумуш ордундарында болушун текшерүү)",
+        max_length=255, blank=True, null=True)
+    time_not_start = models.CharField(
+        "Аудит, эмгек өргүү ж.б. убакыты башатала элек", max_length=255, blank=True, null=True)
+
+    response_audit = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True,
+                                       related_name="response_for_schedules", verbose_name="Жооптуу аудитор")
+    date_create = models.DateField("Дата составления таблицы", default=timezone.now)
+
+    class Meta:
+        verbose_name = "Расстановка"
+        verbose_name_plural = "Расстановки"
+        ordering = ["-date_create", "profile__last_name"]
+
+    def __str__(self):
+        return f"{self.profile.full_name()} — {self.date_create}"
