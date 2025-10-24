@@ -20,8 +20,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("accounts/", include("django.contrib.auth.urls")),
-    path("", include("core.urls")),  # Мои роуты
-    path("accounts/", include("accounts.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  path("admin/", admin.site.urls),
+                  path("accounts/", include("django.contrib.auth.urls")),
+                  path("", include("core.urls")),  # Мои роуты
+                  path("accounts/", include("accounts.urls")),
+                  path('i18n/', include('django.conf.urls.i18n')),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

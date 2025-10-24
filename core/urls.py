@@ -9,6 +9,7 @@ from .views import (EmployeePhonesListView,
 urlpatterns = [
     path("", views.main_menu, name="main_menu"),
     path("contacts/", EmployeePhonesListView.as_view(), name="contacts"),
+    path("contacts/export/", views.export_contacts_excel, name="contacts_export_excel"),
     path("employee_list/", ProfileOfficesListView.as_view(), name="employees"),
     path("settings/", views.settings, name="settings"),
     path("arrangement/", ArrangementListView.as_view(), name="arrangement"),

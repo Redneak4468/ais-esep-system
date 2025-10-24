@@ -1,41 +1,42 @@
+{% load i18n %}
 <nav class="sidebar-navigation">
     <ul>
         <li>
             <a href="{% url 'main_menu' %}">
                 <i class="fa-solid fa-house-chimney"></i>
-                <span class="tooltip">На главную</span>
+                <span class="tooltip">{% trans 'Башкы бет' %}</span>
             </a>
 
         </li>
         <li>
             <a href="{% url 'employees' %}">
                 <i class="fa-solid fa-list"></i>
-                <span class="tooltip">Список сотрудников</span>
+                <span class="tooltip">{% trans 'Кызматкерлердин тизмеси' %}</span>
             </a>
 
         </li>
         <li>
             <a href="{% url 'contacts' %}">
                 <i class="fa-solid fa-phone-flip"></i>
-                <span class="tooltip">Контакты</span>
+                <span class="tooltip">{% trans 'Маалымдама' %}</span>
             </a>
         </li>
         <li>
             <a href="{% url 'accounts:profile_detail' %}">
                 <i class="fa-solid fa-user"></i>
-                <span class="tooltip">Личный кабинет</span>
+                <span class="tooltip">{% trans 'Жеке кабинет' %}</span>
             </a>
         </li>
         <li>
             <a href="{% url 'arrangement' %}">
                 <i class="fa-solid fa-table-list"></i>
-                <span class="tooltip">Расстановка</span>
+                <span class="tooltip">{% trans 'Жайгаштыруу' %}</span>
             </a>
         </li>
         <li>
             <a href="{% url 'settings' %}">
                 <i class="fa fa-sliders"></i>
-                <span class="tooltip">Параметры</span>
+                <span class="tooltip">{% trans 'Параметрлер' %]</span>
             </a>
         </li>
     </ul>

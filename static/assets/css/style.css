@@ -409,3 +409,14 @@ h1, h2, h3, h4, h5, h6 {
 button.btn-sm {
   margin-left: 4px;
 }
+
+.nav-tabs .nav-link {
+  border-radius: 10px 10px 0 0;
+  margin-right: 2px;
+  transition: all 0.3s ease;
+}
+.nav-tabs .nav-link.active {
+  background-color: #f8f9fa;
+  border-color: #dee2e6 #dee2e6 #fff;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+}

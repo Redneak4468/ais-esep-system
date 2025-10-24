@@ -1,3 +1,4 @@
+{% load i18n %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center" href="#">
@@ -26,18 +27,30 @@
             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenu">
                 <li>
                     <a class="dropdown-item" href="{% url 'main_menu' %}">
-                        <i class="fa-solid fa-house me-2"></i> На главную
+                        <i class="fa-solid fa-house me-2"></i>Башкы бет
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">
-                        <i class="fa-solid fa-sliders me-2"></i> Администрирование
+                        <i class="fa-solid fa-sliders me-2"></i>Админ бөлүмү
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="#">
-                        <i class="fa-solid fa-language me-2"></i> Сменить язык
-                    </a>
+                    <form id="set-lang-form" action="{% url 'set_language' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        {% if LANGUAGE_CODE == 'ky' %}
+                        <input type="hidden" name="language" value="ru">
+                        <button type="submit" class="dropdown-item">
+                            <i class="fa-solid fa-language me-2"></i> Русский
+                        </button>
+                        {% else %}
+                        <input type="hidden" name="language" value="ky">
+                        <button type="submit" class="dropdown-item">
+                            <i class="fa-solid fa-language me-2"></i> Кыргызча
+                        </button>
+                        {% endif %}
+                    </form>
                 </li>
                 <li>
                     <hr class="dropdown-divider">
@@ -46,7 +59,7 @@
                     <form method="post" action="{% url 'logout' %}" class="d-inline">
                         {% csrf_token %}
                         <button class="dropdown-item text-danger" type="submit">
-                            <i class="fa-solid fa-right-from-bracket me-2"></i> Выйти
+                            <i class="fa-solid fa-right-from-bracket me-2"></i>Чыгуу
                         </button>
                     </form>
                 </li>
@@ -54,3 +67,23 @@
         </div>
     </div>
 </nav>
+
+<script>
+    (function() {
+      function getCurrentLang() {
+        return "{{ LANGUAGE_CODE }}";  // шаблонная подстановка
+      }
+
+      const toggle = document.getElementById('lang-toggle');
+      const input = document.getElementById('language-input');
+      const form = document.getElementById('language-form');
+
+      toggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        const current = getCurrentLang();
+        const newLang = current === 'ky' ? 'ru' : 'ky';
+        input.value = newLang;
+        form.submit();  // отправит POST на set_language
+      });
+    })();
+</script>

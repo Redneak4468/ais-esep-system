@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Жеке кабинет{% endblock %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-4">
@@ -17,22 +18,23 @@
                 <p class="text-muted">{{ profile.position }}</p>
             </div>
             <div class="col-md-9">
+                {% blocktrans with email=profile.email work=profile.phone_number_work mobile=profile.phone_number_mobile office=profile.office bio=profile.bio %}
                 <h4>Жеке маалымат</h4>
                 <ul class="list-group">
-                    <li class="list-group-item"><strong>Email (esep):</strong> {{ profile.email }}</li>
-                    <li class="list-group-item"><strong>Кызматтык телефон:</strong> {{ profile.phone_number_work }}</li>
-                    <li class="list-group-item"><strong>Мобилдик телефон:</strong> {{ profile.phone_number_mobile }}
-                    </li>
-                    <li class="list-group-item"><strong>Филиал:</strong> {{ profile.office }}</li>
-                    <li class="list-group-item"><strong>Кыскача маалымат:</strong> {{ profile.bio }}</li>
+                    <li class="list-group-item"><strong>Email (esep):</strong> {{ email }}</li>
+                    <li class="list-group-item"><strong>Кызматтык телефон:</strong>{{ work }}</li>
+                    <li class="list-group-item"><strong>Мобилдик телефон:</strong> {{ mobile }}</li>
+                    <li class="list-group-item"><strong>Филиал:</strong>{{ office }}</li>
+                    <li class="list-group-item"><strong>Кыскача маалымат:</strong> {{ bio }}</li>
                 </ul>
+                {% endblocktrans %}
             </div>
             <div class="col-md-12">
                 <ul>
-                    <li class="list-group-item"><span class="text-muted">Туулган күнү:</span>
+                    <li class="list-group-item"><span class="text-muted">{% trans 'Туулган күнү:' %}</span>
                         {{ profile.birth_date|date:"j E Y" }}
                     </li>
-                    <li class="list-group-item"><strong class="text-muted">Статус:</strong>
+                    <li class="list-group-item"><strong class="text-muted">{% trans 'Статус:' %}</strong>
                         <span class="{% if profile.status == 'active' %} text-success
                                      {% elif profile.status == 'vacation' %} text-primary
                                      {% elif profile.status == 'fired' %} text-danger

@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from core.models import Office, Position
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Profile(models.Model):
@@ -89,25 +90,25 @@ class Arrangement(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="arrangements")
     position = models.ForeignKey(Position, on_delete=models.SET_NULL, null=True, blank=True)
     audit_conducting = models.CharField(
-        "Аудит жүргүзүү / ВАК ишине катышуу / окутуу", max_length=500, blank=True, null=True)
+        _("Аудит жүргүзүү / ВАК ишине катышуу / окутуу"), max_length=500, blank=True, null=True)
     audit_purpose = models.CharField(
-        "Аудиттин/командировканын максаты", max_length=500, blank=True, null=True)
+        _("Аудиттин/командировканын максаты"), max_length=500, blank=True, null=True)
     order_num_date = models.CharField(
-        "Аудиттин негизи/жана башка иш чаралар (иш планы, № төраганын буйругунун датасы); "
-        "Узартуу тууралуу буйругу",
+        _("Аудиттин негизи/жана башка иш чаралар (иш планы, № төраганын буйругунун датасы); "
+        "Узартуу тууралуу буйругу"),
         max_length=500, blank=True, null=True)
     order_dates = models.CharField(
-        "Аудитти жүргүзүү/ командировканын мөөнөтү", max_length=255, blank=True, null=True)
+        _("Аудитти жүргүзүү/ командировканын мөөнөтү"), max_length=255, blank=True, null=True)
     audit_address = models.CharField(
-        "Дареги (область/шаар/район/айыл, көчө, тел № ж.б.)", max_length=255, blank=True, null=True)
+        _("Дареги (область/шаар/район/айыл, көчө, тел № ж.б.)"), max_length=255, blank=True, null=True)
     on_status = models.CharField(
-        "Эмгек өргүүдө, өргүмөөдө, эмгекке жарамсыздык баракчасында",
+        _("Эмгек өргүүдө, өргүмөөдө, эмгекке жарамсыздык баракчасында"),
         max_length=255, blank=True, null=True)
     time_check = models.CharField(
-        "Эскертүү (Саат 9:15 кызмат-дин жумуш ордундарында болушун текшерүү)",
+        _("Эскертүү (Саат 9:15 кызмат-дин жумуш ордундарында болушун текшерүү)"),
         max_length=255, blank=True, null=True)
     time_not_start = models.CharField(
-        "Аудит, эмгек өргүү ж.б. убакыты башатала элек", max_length=255, blank=True, null=True)
+        _("Аудит, эмгек өргүү ж.б. убакыты башатала элек"), max_length=255, blank=True, null=True)
 
     response_audit = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True,
                                        related_name="response_for_schedules", verbose_name="Жооптуу аудитор")

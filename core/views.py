@@ -1,16 +1,19 @@
 import json
+import openpyxl
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Prefetch
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.views import View
 from django.views.generic import ListView, DetailView
 from datetime import datetime, timedelta, date
+from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
+from openpyxl.utils import get_column_letter
+from urllib.parse import quote
 
 from accounts.models import Profile, Arrangement
 from core.models import Department, Office, Position
@@ -141,7 +144,7 @@ class ArrangementListView(ListView):
     context_object_name = "arrangements"
     paginate_by = None
 
-    OFFICE_NAME = "Центральный аппарат"
+    OFFICE_NAME = "Борбордук аппарат"
 
     def get_selected_date(self):
         """
@@ -162,25 +165,21 @@ class ArrangementListView(ListView):
         Также проверяем, нет ли новых сотрудников.
         """
         selected_date = self.get_selected_date()
+
         arrangements = Arrangement.objects.filter(date_create=selected_date)
 
-        existing_profiles = arrangements.values_list("profile_id", flat=True)
-        missing_profiles = Profile.objects.filter(office__name="Борбордук аппарат").exclude(id__in=existing_profiles)
+        central_profiles = Profile.objects.filter(office__name=self.OFFICE_NAME)
+        missing_profiles = central_profiles.exclude(id__in=central_profiles)
 
         if missing_profiles.exists():
-            new_arrs = [
-                Arrangement(
-                    profile=p,
-                    position=p.position,
-                    date_create=selected_date,
-                )
+            new_records = [
+                Arrangement(profile=p, position=p.position, date_create=selected_date)
                 for p in missing_profiles
             ]
-            Arrangement.objects.bulk_create(new_arrs)
-            # обновляем queryset
-            arrangements = Arrangement.objects.filter(date_create=selected_date)
+            Arrangement.objects.bulk_create(new_records)
 
-        return arrangements.select_related("profile", "position")
+        return (Arrangement.objects.filter(date_create=selected_date, profile__office__name=self.OFFICE_NAME)
+                .select_related("profile", "position"))
 
     def generate_for_date(self, date_value):
         """Генерация пустых записей для всех сотрудников"""
@@ -191,19 +190,24 @@ class ArrangementListView(ListView):
         ]
         Arrangement.objects.bulk_create(arrangements)
 
+        return arrangements.filter(profile__office__name=self.OFFICE_NAME).select_related("profile", "position")
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        all_arrangements = self.get_queryset()
         selected_date = self.get_selected_date()
+        qs = self.get_queryset()
 
-        inspectors = all_arrangements.filter(profile__is_inspector=True)
-        apparatus = all_arrangements.filter(profile__is_inspector=False)
+        context["apparatus"] = qs.filter(profile__is_inspector=False).order_by(
+            "profile__last_name", "profile__first_name"
+        )
+        context["inspectors"] = qs.filter(profile__is_inspector=True).order_by(
+            "profile__last_name", "profile__first_name"
+        )
 
-        context.update({
-            "selected_date": selected_date,
-            "inspectors": inspectors.order_by("profile__last_name", "profile__first_name"),
-            "apparatus": apparatus.order_by("profile__last_name", "profile__first_name"),
-        })
+        context["selected_date"] = selected_date
+        context["previous_date"] = selected_date - timedelta(days=1)
+        context["next_date"] = selected_date + timedelta(days=1)
+
         return context
 
 
@@ -325,3 +329,127 @@ def delete_arrangement_day(request):
         Arrangement.objects.filter(date_create=date_value).delete()
         messages.warning(request, f"Таблица за {date_value.strftime('%d.%m.%Y')} удалена.")
     return redirect(f"{reverse('arrangement')}?date={date_value}&auto_create=0")
+
+
+def export_contacts_excel(request):
+    """Экспорт списка сотрудников в Excel"""
+    # Создаем новую книгу
+    wb = openpyxl.Workbook()
+    wb.remove(wb.active)
+
+    offices = (
+        Profile.objects.filter(office__isnull=False)
+        .select_related("office", "position", "position__department")
+        .order_by("office__name", "position__department__name", "last_name")
+    )
+
+    # Группируем сотрудников по офисам
+    offices_data = {}
+    for p in offices:
+        offices_data.setdefault(p.office.name, []).append(p)
+
+    border = Border(
+        left=Side(border_style="thin", color="000000"),
+        right=Side(border_style="thin", color="000000"),
+        top=Side(border_style="thin", color="000000"),
+        bottom=Side(border_style="thin", color="000000"),
+    )
+
+    today_str = timezone.now().strftime("%d.%m.%Y")
+
+    # Заголовки
+    for office_name, profiles in offices_data.items():
+        ws = wb.create_sheet(title=office_name[:31])  # Excel ограничивает длину имени листа
+
+        # Заголовок
+        ws.merge_cells("A1:G1")
+        ws["A1"] = (
+            "Кыргыз Республикасынын Эсептөө палатасынын "
+            f"{office_name} кызматкерлеринин телефондорунун жана отурган кабинеттеринин маалымдамасы"
+        )
+        ws["A1"].font = Font(name="Times New Roman", size=14, bold=True, color="AA0000")
+        ws["A1"].alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        ws.row_dimensions[1].height = 40
+
+        # Подзаголовок (дата)
+        ws.merge_cells("A2:G2")
+        ws["A2"] = f"({timezone.now().strftime('%d.%m.%Y')}-ж. карата)"
+        ws["A2"].alignment = Alignment(horizontal="center", vertical="center")
+        ws["A2"].font = Font(name="Times New Roman", size=12, italic=True, color="555555")
+
+        if "Борбордук аппарат" in office_name:
+            ws.merge_cells("A3:G3")
+            ws["A3"] = (
+                "почтанын дареги: 720033, Бишкек ш., Исанов көч., 131, факс: 32 35 11"
+            )
+            ws["A3"].alignment = Alignment(horizontal="center", vertical="center")
+            ws["A3"].font = Font(name="Times New Roman", size=12, italic=True, color="AA0000")
+            start_row = 5
+        else:
+            start_row = 4
+
+        # Заголовки таблицы
+        headers = ["№", "Аты-жөнү", "Кызмат орду", "Кызматтык телефон №", "Өкмөттүк №", "Мобилдик телефон №", "Каб. №"]
+        ws.append(headers)
+        header_row = start_row
+
+        header_fill = PatternFill(start_color="BDD7EE", end_color="BDD7EE", fill_type="solid")
+        for col_num, header in enumerate(headers, 1):
+            cell = ws.cell(row=4, column=col_num, value=header)
+            cell.font = Font(name="Times New Roman", size=12, bold=True)
+            cell.fill = header_fill
+            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+            cell.border = border
+
+        # Начинаем со строки 5
+        row_num = header_row + 1
+
+        departments = {}
+        for p in profiles:
+            dept_name = p.position.department.name if p.position and p.position.department else "Башка"
+            departments.setdefault(dept_name, []).append(p)
+
+        # Добавляем подразделы
+        for dept, profs in departments.items():
+            ws.merge_cells(start_row=row_num, start_column=1, end_row=row_num, end_column=7)
+            cell = ws.cell(row=row_num, column=1, value=dept)
+            cell.font = Font(name="Times New Roman", size=12, bold=True, color="000080")
+            cell.fill = PatternFill(start_color="E2EFDA", end_color="E2EFDA", fill_type="solid")
+            cell.alignment = Alignment(horizontal="center")
+            row_num += 1
+
+            for i, p in enumerate(profs, start=1):
+                ws.append([
+                    i,
+                    p.full_name(),
+                    p.position.title if p.position else "",
+                    p.phone_number_work or "",
+                    p.phone_number_government or "",
+                    p.phone_number_mobile or "",
+                    p.office_number or "",
+                ])
+                for col in range(1, 8):
+                    c = ws.cell(row=row_num, column=col)
+                    c.font = Font(name="Times New Roman", size=12)
+                    c.border = border
+                    c.alignment = Alignment(vertical="center", wrap_text=True)
+                row_num += 1
+
+            ws.append([])
+            row_num += 1
+
+        # Подгон ширины
+        widths = [5, 30, 20, 18, 15, 20, 10]
+        for i, w in enumerate(widths, start=1):
+            ws.column_dimensions[get_column_letter(i)].width = w
+
+    filename = f"Справочник телефонов на {today_str}.xlsx"
+    encoded_filename = quote(filename)
+
+    # Отправляем файл пользователю
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = f"attachment; filename*=UTF-8''{encoded_filename}"
+    wb.save(response)
+    return response
