@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Список сотрудников{% endblock %}
+{% load i18n %}
 {% block content %}
 <div class="container mt-2">
-    <h2>Эсептөө палатасынын кызматкерлердин тизмеси</h2>
+    <h2>{% trans 'Эсептөө палатасынын кызматкерлердин тизмеси' %}</h2>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <!-- Фильтр по отделу -->
         <form method="get" class="d-flex">
             <select name="office" class="form-select me-2" onchange="this.form.submit()">
-                <option value="">Баарын көрсөтүү</option>
+                <option value="">{% trans 'Баарын көрсөтүү' %}</option>
                 {% for off in offices %}
                 <option value="{{ off.id }}"
                         {% if off.id|stringformat:'s' == selected_office %}selected{% endif %}>
@@ -25,19 +26,21 @@
                     name="q"
                     value="{{ request.GET.q }}"
                     class="form-control me-2"
-                    placeholder="Аты-жөнү менен издөө">
+                    placeholder="{% trans 'Аты-жөнү менен издөө' %}">
             <button class="btn btn-outline-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
 
     <table class="table table-striped table-hover text-center align-middle ">
         <thead class="table-primary">
+        {% blocktrans %}
         <tr>
             <th>Аты-жөнү</th>
             <th>Кызмат орду</th>
             <th>email (esep)</th>
             <th>Статус</th>
         </tr>
+        {% endblocktrans %}
         </thead>
         <tbody>
         {% for employee in employees %}
@@ -69,7 +72,7 @@
         </tr>
         {% empty %}
         <tr>
-            <td colspan="6">Нет сотрудников</td>
+            <td colspan="6">{% trans 'Кызматкер жок' %}</td>
         </tr>
         {% endfor %}
         </tbody>

@@ -16,7 +16,6 @@ urlpatterns = [
     path("arrangement/update/<int:pk>/", views.arrangement_update, name="arrangement_update"),
     path("employees/<int:pk>/", EmployeeDetailView.as_view(), name="employee_detail"),
     path("arrangement/import-day/", views.import_arrangement_day, name="import_arrangement_day"),
-    path("arrangement/generate-month/", views.generate_month_view, name="generate_month"),
+    path("arrangement/generate-day/", views.generate_arrangement_day, name="generate_arrangement_day"),
     path("arrangement/clear-day/", views.clear_arrangement_day, name="clear_arrangement_day"),
-    path("arrangement/delete-day/", views.delete_arrangement_day, name="delete_arrangement_day"),
 ]

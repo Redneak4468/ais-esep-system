@@ -1,16 +1,14 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block content %}
 <div class="container mt-3">
     <h4 class="mb-4 text-center">
-        {% trans 'Кыргыз Республикасынын Эсептөө палатасынын Борбордук аппаратынын
-        кызматкерлеринин телефондорунун жана отурган кабинеттеринин маалымдамасы' %}
-
+        {% trans 'Кыргыз Республикасынын Эсептөө палатасынын Борбордук аппаратынын кызматкерлеринин телефондорунун жана отурган кабинеттеринин маалымдамасы' %}
     </h4>
     <div class="d-flex">
         <form method="get" class="d-flex mx-right w-25 mb-3" role="search">
             <input type="text" name="q" value="{{ request.GET.q }}" class="form-control me-2"
-                   placeholder="Аты-жөнү, телефон номери">
+                   placeholder="{% trans 'Аты-жөнү, телефон номери' %}">
             <button class="btn btn-outline-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <a href="{% url 'contacts_export_excel' %}" class="btn btn-success d-flex

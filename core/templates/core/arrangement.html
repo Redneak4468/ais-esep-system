@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Расстановка{% endblock %}
 {% block content %}
+{% load i18n %}
 <div class="mt-4">
     <h3 class="text-center">
         {% trans 'Кыргыз Республикасынын Эсептөө палатасынын Борбордук аппаратынын кызматкерлеринин жайгаштыруусу' %}
@@ -15,41 +16,51 @@
             <a href="?date={{ next_date|date:'Y-m-d' }}" class="btn btn-outline-primary btn-sm">→</a>
         </div>
 
-        <div class="d-flex gap-2">
+        <div class="d-flex align-items-center gap-2">
+            {% if is_empty %}
+            <form method="POST" action="{% url 'generate_arrangement_day' %}">
+                {% csrf_token %}
+                <input type="hidden" name="date" value="{{ selected_date|date:'Y-m-d' }}">
+                <button type="submit" class="btn btn-success btn-sm">
+                    <i class="fa-solid fa-calendar-plus me-2"></i>{% trans 'План түзүү' %}
+                </button>
+            </form>
+            {% else %}
             <form method="post" action="{% url 'import_arrangement_day' %}" class="d-flex align-items-center gap-2">
                 {% csrf_token %}
                 <input type="hidden" name="target_date" value="{{ selected_date|date:'Y-m-d' }}">
                 <input type="date" name="source_date" class="form-control form-control-sm" required>
-                <button type="submit" class="btn btn-secondary btn-sm">Импорттоо</button>
+                <button type="submit" class="btn btn-secondary btn-sm">{% trans 'Импорттоо' %}</button>
             </form>
 
             <form method="post" action="{% url 'clear_arrangement_day' %}">
                 {% csrf_token %}
                 <input type="hidden" name="date" value="{{ selected_date|date:'Y-m-d' }}">
-                <button type="submit" class="btn btn-warning btn-sm">Тазалоо</button>
+                <button type="submit" class="btn btn-warning btn-sm">{% trans 'Тазалоо' %}</button>
             </form>
-
-            <form method="post" action="{% url 'delete_arrangement_day' %}">
-                {% csrf_token %}
-                <input type="hidden" name="date" value="{{ selected_date|date:'Y-m-d' }}">
-                <button type="submit" class="btn btn-danger btn-sm">Алып салуу</button>
-            </form>
+            {% endif %}
         </div>
     </div>
 
+    {% if is_empty %}
+    <!-- Если расстановка не сформирована -->
+    <div class="alert alert-warning text-center mt-4">
+        <strong>{% trans 'Бул күнгө жайгаштыруу планы түзүлгөн эмес.' %}</strong><br>
+        {% trans 'План түзүү баскычын басып, кызматкерлерди кошуңуз.' %}
+    </div>
+
+    {% else %}
     <ul class="nav nav-tabs" id="arrangementTabs" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="apparatus-tab"
                     data-bs-toggle="tab" data-bs-target="#apparatus"
-                    type="button" role="tab">
-                Аппарат
+                    type="button" role="tab">{% trans 'Аппарат' %}
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="inspectors-tab"
                     data-bs-toggle="tab" data-bs-target="#inspectors" type="button"
-                    role="tab">
-                Инспектор.топ
+                    role="tab">{% trans 'Инспектор.топ' %}
             </button>
         </li>
     </ul>
@@ -114,7 +125,7 @@
                 </table>
             </div>
             {% else %}
-            <p class="text-muted">Нет сотрудников аппарата на эту дату.</p>
+            <p class="text-muted">{% trans 'Кызметкерлердин жайгаштыруусу бүгүн жок' %}</p>
             {% endif %}
         </div>
 
@@ -130,6 +141,7 @@
                         <th>Ээлеген кызмат орду</th>
                         <th>Аудит жүргүзүү / ВАК ишине катышуу / окутуу</th>
                         <th>Аудиттин/командировканын максаты</th>
+                        <th>Жооптуу аудитор</th>
                         <th>Аудиттин негизи/жана башка иш чаралар (иш планы, № төраганын
                             буйругунун датасы); Узартуу тууралуу буйругу
                         </th>
@@ -138,7 +150,6 @@
                         <th>Эмгек өргүүдө, өргүмөөдө, эмгекке жарамсыздык баракчасында</th>
                         <th>Эскертүү (Саат 9:15 кызмат-дин жумуш ордундарында болушун текшерүү )</th>
                         <th>Аудит, эмгек өргүү ж.б. убакыты баштала элек</th>
-                        <th>Жооптуу аудитор</th>
                     </tr>
                     {% endblocktrans %}
                     </thead>
@@ -153,6 +164,9 @@
                         </td>
                         <td class="editable" data-field="audit_purpose" data-id="{{ arr.id }}">
                             {{ arr.audit_purpose|default:" " }}
+                        </td>
+                        <td class="editable" data-field="response_audit" data-id="{{ arr.id }}">
+                            {{ arr.response_audit|default:" " }}
                         </td>
                         <td class="editable" data-field="order_num_date" data-id="{{ arr.id }}">
                             {{ arr.order_num_date|default:" " }}
@@ -172,19 +186,17 @@
                         <td class="editable" data-field="time_not_start" data-id="{{ arr.id }}">
                             {{ arr.time_not_start|default:" " }}
                         </td>
-                        <td class="editable" data-field="response_audit" data-id="{{ arr.id }}">
-                            {{ arr.response_audit|default:" " }}
-                        </td>
                     </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
             {% else %}
-            <p class="text-muted">Нет инспекторов на эту дату.</p>
+            <p class="text-muted">{% trans 'Инспекторлордун жайгаштыруусу бүгүн жок' %}</p>
             {% endif %}
         </div>
     </div>
+    {% endif %}
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", () => {

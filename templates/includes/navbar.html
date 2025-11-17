@@ -4,7 +4,7 @@
         <a class="navbar-brand d-flex align-items-center" href="#">
             <img src="/static/favicon/android-chrome-192x192.png"
                  alt="Logo" width="40" height="40" class="me-3">
-            <span class="fw-bold">Справочник</span>
+            <span class="fw-bold">{% trans 'Справочник' %}</span>
         </a>
 
         <div class="dropdown ms-lg-3">
@@ -27,12 +27,12 @@
             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenu">
                 <li>
                     <a class="dropdown-item" href="{% url 'main_menu' %}">
-                        <i class="fa-solid fa-house me-2"></i>Башкы бет
+                        <i class="fa-solid fa-house me-2"></i>{% trans 'Башкы бет' %}
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">
-                        <i class="fa-solid fa-sliders me-2"></i>Админ бөлүмү
+                        <i class="fa-solid fa-sliders me-2"></i>{% trans 'Админ бөлүмү' %}
                     </a>
                 </li>
                 <li>
@@ -59,7 +59,7 @@
                     <form method="post" action="{% url 'logout' %}" class="d-inline">
                         {% csrf_token %}
                         <button class="dropdown-item text-danger" type="submit">
-                            <i class="fa-solid fa-right-from-bracket me-2"></i>Чыгуу
+                            <i class="fa-solid fa-right-from-bracket me-2"></i>{% trans 'Чыгуу' %}
                         </button>
                     </form>
                 </li>

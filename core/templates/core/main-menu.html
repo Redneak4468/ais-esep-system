@@ -1,17 +1,20 @@
 {% extends "base.html" %}
 {% block title %}ИС СП{% endblock %}
+{% load i18n %}
 {% block content %}
 <div class="title-block">
     <img src="/static/favicon/android-chrome-192x192.png">
-    <h3>Кыргыз Республикасынын Эсептөө палатасынын маалымат системасына кош келиңиздер</h3>
+    <h3>{% trans 'Кыргыз Республикасынын Эсептөө палатасынын маалымат системасына кош келиңиздер' %}</h3>
 </div>
 
 <div class="menu-blocks">
     <div class="main-blocks">
         <div class="guide-block">
             <a href="https://infodocs.srs.kg/" name="infodocs">
+                {% blocktrans %}
                 <p>"Infodocs" (СЭД) - мамлекеттик органдарда документ жүгүртүүнү
                     автоматташтыруу үчүн иштелип чыккан маалымат системасы</p>
+                {% endblocktrans %}
                 <div class="logo-block">
                     <img src="/media/user_photos/infodocs.JPG" alt="infodocs">
                 </div>
@@ -19,7 +22,7 @@
         </div>
         <div class="guide-block">
             <a href="https://www.esep.kg/index.php?lang=kg" name="esep.kg">
-                <p>Кыргыз Республикасынын Эсептөө палатасынын маалымат расмий сайты</p>
+                <p>{% trans 'Кыргыз Республикасынын Эсептөө палатасынын маалымат расмий сайты' %}</p>
                 <div class="logo-block">
                     <img src="/media/user_photos/ais_screen.JPG" alt="ais_esep">
                 </div>
@@ -33,7 +36,7 @@
                 <div class="logo-block">
                     <img src="/media/user_photos/phone_number.JPG" alt="phone numbers"> <!-- Тут будет иконка или картина телефона-->
                 </div>
-                <p>Эсептөө палатасынын кызматкерлердин байланыш телефону</p>
+                <p>{% trans 'Эсептөө палатасынын кызматкерлердин байланыш телефону' %}</p>
             </a>
         </div>
         <div class="guide-block">
@@ -41,7 +44,7 @@
                 <div class="logo-block">
                     <img src="/media/user_photos/profile_image.JPG" alt="profile"> <!-- Тут будет иконка или картина личного кабинета -->
                 </div>
-                <p>Жеке кабинетке кирүү</p>
+                <p>{% trans 'Жеке кабинетке кирүү' %}</p>
             </a>
         </div>
     </div>

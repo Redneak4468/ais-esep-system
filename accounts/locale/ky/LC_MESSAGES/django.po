@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-22 16:36+0600\n"
+"POT-Creation-Date: 2025-10-28 14:41+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,15 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\models.py:93
+#: .\accounts\models.py:93
 msgid "Аудит жүргүзүү / ВАК ишине катышуу / окутуу"
 msgstr "Аудит жүргүзүү / ВАК ишине катышуу / окутуу"
 
-#: .\models.py:95
+#: .\accounts\models.py:95
 msgid "Аудиттин/командировканын максаты"
 msgstr "Аудиттин/командировканын максаты"
 
-#: .\models.py:97
+#: .\accounts\models.py:97
 msgid ""
 "Аудиттин негизи/жана башка иш чаралар (иш планы, № төраганын буйругунун "
 "датасы); Узартуу тууралуу буйругу"
@@ -34,27 +34,27 @@ msgstr ""
 "Аудиттин негизи/жана башка иш чаралар (иш планы, № төраганын буйругунун "
 "датасы); Узартуу тууралуу буйругу"
 
-#: .\models.py:101
+#: .\accounts\models.py:101
 msgid "Аудитти жүргүзүү/ командировканын мөөнөтү"
 msgstr "Аудитти жүргүзүү/ командировканын мөөнөтү"
 
-#: .\models.py:103
+#: .\accounts\models.py:103
 msgid "Дареги (область/шаар/район/айыл, көчө, тел № ж.б.)"
 msgstr "Дареги (область/шаар/район/айыл, көчө, тел № ж.б.)"
 
-#: .\models.py:105
+#: .\accounts\models.py:105
 msgid "Эмгек өргүүдө, өргүмөөдө, эмгекке жарамсыздык баракчасында"
 msgstr "Эмгек өргүүдө, өргүмөөдө, эмгекке жарамсыздык баракчасында"
 
-#: .\models.py:108
+#: .\accounts\models.py:108
 msgid "Эскертүү (Саат 9:15 кызмат-дин жумуш ордундарында болушун текшерүү)"
 msgstr "Эскертүү (Саат 9:15 кызмат-дин жумуш ордундарында болушун текшерүү)"
 
-#: .\models.py:111
+#: .\accounts\models.py:111
 msgid "Аудит, эмгек өргүү ж.б. убакыты башатала элек"
 msgstr "Аудит, эмгек өргүү ж.б. убакыты башатала элек"
 
-#: .\templates\accounts\dashboard.html:21
+#: .\accounts\templates\accounts\dashboard.html:21
 #, python-format
 msgid ""
 "\n"
@@ -89,17 +89,17 @@ msgstr ""
 "                </ul>\n"
 "                "
 
-#: .\templates\accounts\dashboard.html:34
-#: .\templates\accounts\dashboard_empl.html:37
+#: .\accounts\templates\accounts\dashboard.html:34
+#: .\accounts\templates\accounts\dashboard_empl.html:37
 msgid "Туулган күнү:"
 msgstr "Туулган күнү:"
 
-#: .\templates\accounts\dashboard.html:37
-#: .\templates\accounts\dashboard_empl.html:40
+#: .\accounts\templates\accounts\dashboard.html:37
+#: .\accounts\templates\accounts\dashboard_empl.html:40
 msgid "Статус:"
 msgstr "Статус:"
 
-#: .\templates\accounts\dashboard_empl.html:21
+#: .\accounts\templates\accounts\dashboard_empl.html:21
 #, python-format
 msgid ""
 "\n"

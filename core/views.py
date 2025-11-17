@@ -142,14 +142,9 @@ class ArrangementListView(ListView):
     model = Arrangement
     template_name = "core/arrangement.html"
     context_object_name = "arrangements"
-    paginate_by = None
-
     OFFICE_NAME = "Борбордук аппарат"
 
     def get_selected_date(self):
-        """
-        Получаем дату из GET-параметра или используем сегодня
-        """
         date_str = self.request.GET.get("date")
         if date_str:
             try:
@@ -159,56 +154,53 @@ class ArrangementListView(ListView):
         return timezone.localdate()
 
     def get_queryset(self):
-        """
-        Возвращаем queryset всех записей расстановки на выбранную дату.
-        Если таблица не существует — создаём.
-        Также проверяем, нет ли новых сотрудников.
-        """
         selected_date = self.get_selected_date()
-
-        arrangements = Arrangement.objects.filter(date_create=selected_date)
-
-        central_profiles = Profile.objects.filter(office__name=self.OFFICE_NAME)
-        missing_profiles = central_profiles.exclude(id__in=central_profiles)
-
-        if missing_profiles.exists():
-            new_records = [
-                Arrangement(profile=p, position=p.position, date_create=selected_date)
-                for p in missing_profiles
-            ]
-            Arrangement.objects.bulk_create(new_records)
-
-        return (Arrangement.objects.filter(date_create=selected_date, profile__office__name=self.OFFICE_NAME)
-                .select_related("profile", "position"))
-
-    def generate_for_date(self, date_value):
-        """Генерация пустых записей для всех сотрудников"""
-        employees = Profile.objects.select_related('position').all()
-        arrangements = [
-            Arrangement(profile=emp, position=emp.position, date_create=date_value)
-            for emp in employees
-        ]
-        Arrangement.objects.bulk_create(arrangements)
-
-        return arrangements.filter(profile__office__name=self.OFFICE_NAME).select_related("profile", "position")
+        return (
+            Arrangement.objects.filter(
+                date_create=selected_date,
+                profile__office__name=self.OFFICE_NAME
+            )
+            .select_related("profile", "position")
+            .order_by("profile__last_name", "profile__first_name")
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         selected_date = self.get_selected_date()
         qs = self.get_queryset()
 
-        context["apparatus"] = qs.filter(profile__is_inspector=False).order_by(
-            "profile__last_name", "profile__first_name"
-        )
-        context["inspectors"] = qs.filter(profile__is_inspector=True).order_by(
-            "profile__last_name", "profile__first_name"
-        )
-
         context["selected_date"] = selected_date
         context["previous_date"] = selected_date - timedelta(days=1)
         context["next_date"] = selected_date + timedelta(days=1)
 
+        context["apparatus"] = qs.filter(profile__is_inspector=False)
+        context["inspectors"] = qs.filter(profile__is_inspector=True)
+        context["is_empty"] = not qs.exists()  # 👈 Проверяем, есть ли записи
+
         return context
+
+
+def generate_arrangement_day(request):
+    """Создание записей для конкретного дня"""
+    if request.method == "POST":
+        date_str = request.POST.get("date")
+        try:
+            date_value = timezone.datetime.strptime(date_str, "%Y-%m-%d").date()
+        except ValueError:
+            messages.error(request, "Неверная дата.")
+            return redirect("arrangement")
+
+        # Отбираем только центральный аппарат
+        employees = Profile.objects.filter(office__name="Борбордук аппарат")
+        existing_ids = Arrangement.objects.filter(date_create=date_value).values_list("profile_id", flat=True)
+        new_records = [
+            Arrangement(profile=emp, position=emp.position, date_create=date_value)
+            for emp in employees if emp.id not in existing_ids
+        ]
+        Arrangement.objects.bulk_create(new_records)
+        messages.success(request, f"Сформировано {len(new_records)} записей на {date_value.strftime('%d.%m.%Y')}.")
+
+        return redirect(f"{reverse('arrangement')}?date={date_value}")
 
 
 def arrangement_update(request, pk):
@@ -267,43 +259,6 @@ def import_arrangement_day(request):
         return redirect(f"{reverse('arrangement')}?date={target_date}")
 
 
-def generate_month_arrangements(year=None, month=None):
-    """Генерация записей на месяц"""
-    today = timezone.now().date()
-    year = year or today.year
-    month = month or today.month
-
-    first_day = date(year, month, 1)
-    if month == 12:
-        next_month = date(year + 1, 1, 1)
-    else:
-        next_month = date(year, month + 1, 1)
-    last_day = next_month - timedelta(days=1)
-
-    employees = Profile.objects.all()
-    new_records = []
-    current_day = first_day
-
-    while current_day <= last_day:
-        for emp in employees:
-            if not Arrangement.objects.filter(profile=emp, date_create=current_day).exists():
-                new_records.append(Arrangement(profile=emp, position=emp.position, date_create=current_day))
-        current_day += timedelta(days=1)
-
-    Arrangement.objects.bulk_create(new_records)
-    return len(new_records)
-
-
-def generate_month_view(request):
-    """Создание таблиц за месяц"""
-    if request.method == "POST":
-        year = int(request.POST.get("year"))
-        month = int(request.POST.get("month"))
-        created_count = generate_month_arrangements(year, month)
-        messages.success(request, f"Создано {created_count} записей за {month:02}.{year}.")
-        return redirect("arrangement")
-
-
 def clear_arrangement_day(request):
     """Очищает данные в таблице за день"""
     if request.method == "POST":
@@ -320,15 +275,6 @@ def clear_arrangement_day(request):
         )
         messages.info(request, f"Данные за {date_value.strftime('%d.%m.%Y')} очищены.")
     return redirect(f"{reverse('arrangement')}?date={date_value}")
-
-
-def delete_arrangement_day(request):
-    """Полное удаление таблицы за день"""
-    if request.method == "POST":
-        date_value = timezone.datetime.fromisoformat(request.POST.get("date")).date()
-        Arrangement.objects.filter(date_create=date_value).delete()
-        messages.warning(request, f"Таблица за {date_value.strftime('%d.%m.%Y')} удалена.")
-    return redirect(f"{reverse('arrangement')}?date={date_value}&auto_create=0")
 
 
 def export_contacts_excel(request):

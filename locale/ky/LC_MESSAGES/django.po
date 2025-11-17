@@ -1,0 +1,62 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-10-28 14:41+0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+#: .\config\settings.py:115
+msgid "Кыргызча"
+msgstr "Кыргызча"
+
+#: .\config\settings.py:116
+msgid "Русский"
+msgstr "Русский"
+
+#: .\templates\includes\navbar.html:7
+msgid "Справочник"
+msgstr "Справочник"
+
+#: .\templates\includes\navbar.html:30 .\templates\includes\sidebar.html:7
+msgid "Башкы бет"
+msgstr "Башкы бет"
+
+#: .\templates\includes\navbar.html:35
+msgid "Админ бөлүмү"
+msgstr "Админ бөлүмү"
+
+#: .\templates\includes\navbar.html:62
+msgid "Чыгуу"
+msgstr "Чыгуу"
+
+#: .\templates\includes\sidebar.html:14
+msgid "Кызматкерлердин тизмеси"
+msgstr "Кызматкерлердин тизмеси"
+
+#: .\templates\includes\sidebar.html:21
+msgid "Маалымдама"
+msgstr "Маалымдама"
+
+#: .\templates\includes\sidebar.html:27
+msgid "Жеке кабинет"
+msgstr "Жеке кабинет"
+
+#: .\templates\includes\sidebar.html:33
+msgid "Жайгаштыруу"
+msgstr "Жайгаштыруу"
+
+#: .\templates\includes\sidebar.html:39
+msgid "Параметрлер"
+msgstr "Параметрлер"

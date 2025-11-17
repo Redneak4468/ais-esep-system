@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-22 16:36+0600\n"
+"POT-Creation-Date: 2025-10-28 14:41+0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,15 +20,15 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\models.py:93
+#: .\accounts\models.py:93
 msgid "Аудит жүргүзүү / ВАК ишине катышуу / окутуу"
 msgstr "Аудит / участие в работе Государственного контроля / обучение"
 
-#: .\models.py:95
+#: .\accounts\models.py:95
 msgid "Аудиттин/командировканын максаты"
 msgstr "Цель аудита/командировки"
 
-#: .\models.py:97
+#: .\accounts\models.py:97
 msgid ""
 "Аудиттин негизи/жана башка иш чаралар (иш планы, № төраганын буйругунун "
 "датасы); Узартуу тууралуу буйругу"
@@ -36,27 +36,27 @@ msgstr ""
 "Основание аудита/иные мероприятия (план работ, № Приказ Председателя,дата); "
 "Приказ о продлении"
 
-#: .\models.py:101
+#: .\accounts\models.py:101
 msgid "Аудитти жүргүзүү/ командировканын мөөнөтү"
 msgstr "Продолжительность аудита/командировки"
 
-#: .\models.py:103
+#: .\accounts\models.py:103
 msgid "Дареги (область/шаар/район/айыл, көчө, тел № ж.б.)"
 msgstr "Адрес (область/город/район/село, улица, номер телефона и т. д.)"
 
-#: .\models.py:105
+#: .\accounts\models.py:105
 msgid "Эмгек өргүүдө, өргүмөөдө, эмгекке жарамсыздык баракчасында"
 msgstr "В отпуске, на больничном, на справке об инвалидности"
 
-#: .\models.py:108
+#: .\accounts\models.py:108
 msgid "Эскертүү (Саат 9:15 кызмат-дин жумуш ордундарында болушун текшерүү)"
 msgstr "Примечание (Проверка на месте в 9:15 утра)"
 
-#: .\models.py:111
+#: .\accounts\models.py:111
 msgid "Аудит, эмгек өргүү ж.б. убакыты башатала элек"
 msgstr "Время аудита, отпуска и т.п. еще не началось."
 
-#: .\templates\accounts\dashboard.html:21
+#: .\accounts\templates\accounts\dashboard.html:21
 #, python-format
 msgid ""
 "\n"
@@ -82,26 +82,26 @@ msgstr ""
 "strong> %(email)s</li>\n"
 "                    <li class=\"list-group-item\"><strong>Служебный телефон:"
 "</strong>%(work)s</li>\n"
-"                    <li class=\"list-group-item\"><strong>Мобильный телефон:</"
-"strong> %(mobile)s</li>\n"
+"                    <li class=\"list-group-item\"><strong>Мобильный телефон:"
+"</strong> %(mobile)s</li>\n"
 "                    <li class=\"list-group-item\"><strong>Филиал:</"
 "strong>%(office)s</li>\n"
-"                    <li class=\"list-group-item\"><strong>Краткая информация:</"
-"strong> %(bio)s</li>\n"
+"                    <li class=\"list-group-item\"><strong>Краткая информация:"
+"</strong> %(bio)s</li>\n"
 "                </ul>\n"
 "                "
 
-#: .\templates\accounts\dashboard.html:34
-#: .\templates\accounts\dashboard_empl.html:37
+#: .\accounts\templates\accounts\dashboard.html:34
+#: .\accounts\templates\accounts\dashboard_empl.html:37
 msgid "Туулган күнү:"
 msgstr "Год рождения:"
 
-#: .\templates\accounts\dashboard.html:37
-#: .\templates\accounts\dashboard_empl.html:40
+#: .\accounts\templates\accounts\dashboard.html:37
+#: .\accounts\templates\accounts\dashboard_empl.html:40
 msgid "Статус:"
 msgstr "Статус:"
 
-#: .\templates\accounts\dashboard_empl.html:21
+#: .\accounts\templates\accounts\dashboard_empl.html:21
 #, python-format
 msgid ""
 "\n"
@@ -132,12 +132,12 @@ msgstr ""
 "</strong>\n"
 "                        %(work)s\n"
 "                    </li>\n"
-"                    <li class=\"list-group-item\"><strong>Мобильный телефон:</"
-"strong> %(mobile)s\n"
+"                    <li class=\"list-group-item\"><strong>Мобильный телефон:"
+"</strong> %(mobile)s\n"
 "                    </li>\n"
 "                    <li class=\"list-group-item\"><strong>Филиал:</strong> "
 "%(office)s</li>\n"
-"                    <li class=\"list-group-item\"><strong>Краткая информация:</"
-"strong> %(bio)s</li>\n"
+"                    <li class=\"list-group-item\"><strong>Краткая информация:"
+"</strong> %(bio)s</li>\n"
 "                </ul>\n"
 "                "

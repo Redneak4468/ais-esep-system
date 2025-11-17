@@ -28,8 +28,8 @@ class Profile(models.Model):
     patronymic = models.CharField("Отчество", max_length=100, blank=True, null=True)
 
     # Данные из паспорта (ИНН -> дата рождения + пол)
-    pin = models.CharField("ИНН", max_length=20, unique=True)
-    birth_date = models.DateField("Дата рождения", null=True, blank=True, )
+    pin = models.CharField("ИНН", max_length=20, unique=True, null=True, blank=True)
+    birth_date = models.DateField("Дата рождения", null=True, blank=True)
     gender = models.CharField("Пол", max_length=10, choices=GENDER_CHOICES, blank=True)
 
     def save(self, *args, **kwargs):
